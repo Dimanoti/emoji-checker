@@ -1,13 +1,74 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Emoji Checker</title>
-    </head>
-    <body>
-        <div>
-            Input: <input type="text">
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Current Time:</h2>
+        <p id="currentTime"></p>
+    </div>
+
+    <div class="container">
+        <h2>A+B Problem</h2>
+        <input type="number" id="num1" placeholder="Input A:">
+        <input type="number" id="num2" placeholder="Input B:">
+        <button onclick="calculateSum()">Calculate A+B</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        // 显示当前时间
+        function updateTime() {
+            const currentTimeElement = document.getElementById('currentTime');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); // 初始调用以立即显示时间
+
+        // 计算两数之和
+        function calculateSum() {
+            const num1 = parseInt(document.getElementById('num1').value, 10);
+            const num2 = parseInt(document.getElementById('num2').value, 10);
+            const resultElement = document.getElementById('result');
+            if (isNaN(num1) || isNaN(num2)) {
+                resultElement.textContent = 'Integer is not valid';
+            } else {
+                resultElement.textContent = `The answer is: ${num1 + num2}`;
+            }
+        }
+    </script>
+
+</body>
 </html>
