@@ -1,74 +1,64 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emoji Checker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px;
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/style1.css" />
+    <script src="js/vendor/modernizr.js"></script>
+	<script src="js/foundation/foundation.magellan.js"></script>
 
-    <div class="container">
-        <h2>Current Time:</h2>
-        <p id="currentTime"></p>
-    </div>
+  </head>
+  <body>
 
-    <div class="container">
-        <h2>A+B Problem</h2>
-        <input type="number" id="num1" placeholder="Input A:">
-        <input type="number" id="num2" placeholder="Input B:">
-        <button onclick="calculateSum()">Calculate A+B</button>
-        <p id="result"></p>
-    </div>
+   <!-- Header and Nav -->
+ 
+	<div class="fixed">
+	<nav class="top-bar" data-topbar>
+	  <ul class="title-area">
+	    <li class="name">
+	      <h1><a href="#">表情符号检查器</a></h1>
+	    </li>
+	  </ul>
 
+	  <section class="top-bar-section">
+	    <!-- Right Nav Section -->
+	    <ul class="right">
+			<li><a href="https://emojichecker.cn/sign-up">注册</a></li>
+			<li><a href="https://emojichecker.cn/sign-in">登录</a></li>
+	    </ul>
+
+	  </section>
+	</nav>
+	</div>
+
+  <!-- End Header and Nav -->
+
+	<div class="row">
+		<div class="large-4 columns">
+		  <!--<h1><img src="http://placehold.it/400x100&text=Logo" /></h1>-->
+		  <p></p>
+		  <p><a href="https://twitter.com/intent/tweet?button_hashtag=BOFU2015" class="twitter-hashtag-button">Tweet #BOFU2015</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+		<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+
+	</div>
+    <div class="large-8 columns">
+     </div>
+   </div>
+  
+<!-- End Header and Nav -->
+ 
+<!-- First Band (Slider) -->
+ 
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
     <script>
-        // 显示当前时间
-        function updateTime() {
-            const currentTimeElement = document.getElementById('currentTime');
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime(); // 初始调用以立即显示时间
-
-        // 计算两数之和
-        function calculateSum() {
-            const num1 = parseInt(document.getElementById('num1').value, 10);
-            const num2 = parseInt(document.getElementById('num2').value, 10);
-            const resultElement = document.getElementById('result');
-            if (isNaN(num1) || isNaN(num2)) {
-                resultElement.textContent = 'Integer is not valid';
-            } else {
-                resultElement.textContent = `The answer is: ${num1 + num2}`;
-            }
-        }
+      $(document).foundation();
     </script>
-
-</body>
+  </body>
 </html>
