@@ -1,35 +1,31 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.getElementById("modal");
-    const signInBtn = document.getElementById("sign-in-btn");
-    const signUpBtn = document.getElementById("sign-up-btn");
-    const closeModalBtn = document.getElementById("close-modal");
-    const signInForm = document.getElementById("sign-in-form");
-    const signUpForm = document.getElementById("sign-up-form");
+// Get the modal
+var signInModal = document.getElementById("signInModal");
+var signUpModal = document.getElementById("signUpModal");
 
-    signInBtn.addEventListener("click", function() {
-        signUpForm.style.display = "none";
-        signInForm.style.display = "block";
-        modal.style.display = "block";
-    });
+// Get the button that opens the modal
 
-    signUpBtn.addEventListener("click", function() {
-        signInForm.style.display = "none";
-        signUpForm.style.display = "block";
-        modal.style.display = "block";
-    });
+// Function to open the Sign In Modal
+function openModal(modalId) {
+  if (modalId === 'signIn') {
+    signInModal.style.display = "block";
+  } else if (modalId === 'signUp') {
+    signUpModal.style.display = "block";
+  }
+}
 
-    closeModalBtn.addEventListener("click", function() {
-        modal.style.display = "none";
-        signInForm.style.display = "none";
-        signUpForm.style.display = "none";
-    });
+// Function to close the modal
+function closeModal(modalId) {
+  if (modalId === 'signInModal') {
+    signInModal.style.display = "none";
+  } else if (modalId === 'signUpModal') {
+    signUpModal.style.display = "none";
+  }
+}
 
-    // Close the modal if the user clicks anywhere outside of the modal
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            signInForm.style.display = "none";
-            signUpForm.style.display = "none";
-        }
-    };
-});
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == signInModal || event.target == signUpModal) {
+    signInModal.style.display = "none";
+    signUpModal.style.display = "none";
+  }
+}
