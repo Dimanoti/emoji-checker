@@ -1166,8 +1166,8 @@ meta.foundation-mq-topbar {
     padding-bottom: .35rem;
     font-size: 0.75rem; }
   .top-bar .button {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     margin-bottom: 0;
     font-size: 0.75rem; }
   .top-bar .title-area {
@@ -1266,7 +1266,7 @@ meta.foundation-mq-topbar {
     font-weight: normal;
     background: #8b0000; }
     .top-bar-section ul li > a.button {
-      background: #ba002c;
+      background: #1f1e33;
       font-size: 1.5rem;
       padding-right: 15px;
       padding-left: 15px; }
@@ -1368,7 +1368,7 @@ meta.foundation-mq-topbar {
     .top-bar .button {
       font-size: 1rem;
       position: relative;
-      top: 20px; }
+      top: 0px; }
     .top-bar.expanded {
       background: #1f1e33; }
 
