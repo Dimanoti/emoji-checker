@@ -26,7 +26,7 @@
 	    <!-- Right Nav Section -->
 	    <ul class="right">
 			<li><a href="#" class="button" onclick="openModal('signIn')">Sign In</a></li>
-        		<li><a href="#" class="button" onclick="openModal('signUp')">Sign Up</a></li>
+        		<li><a href="/sign-up" class="button">Sign Up</a></li>
 	    </ul>
 
 	  </section>
@@ -50,7 +50,51 @@
   </div>
 	</div>
 
- 
+ <div class="dialog dialog--signin" style="display:none">
+  <div class="dialog__content">
+    <div class="dialog--signin__bg">
+      <div class="dialog--signin__side">
+        <h1>还没有账户？</h1>
+        <p>注册一个 Vijos 通用账户，您就可以在我们提供的所有在线评测服务上提交代码、参与讨论。</p>
+        <div><a href="/sign-up" class="inverse rounded button">现在注册</a></div>
+      </div>
+    </div>
+    <div class="dialog--signin__main">
+      <form action="/login" method="post">
+        <div class="dialog--signin__close-container supplementary">
+          <a name="dialog--signin__close" href="javascript:;">关闭</a>
+        </div>
+        <h1 class="dialog--signin__title">登录</h1>
+        <p class="dialog--signin__note">使用您的 Vijos 通用账户</p>
+        <div class="row"><div class="columns">
+          <label class="material textbox">
+            用户名
+            <input name="uname" type="text" data-autofocus>
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label class="material textbox">
+            密码
+            <input name="password" type="password">
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label class="checkbox">
+            <input type="checkbox" name="rememberme">记住我
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <input type="submit" value="登录" class="expanded rounded primary button">
+        </div></div>
+        <div class="row"><div class="columns">
+          <div class="supplementary text-center">
+            <a href="/lostpass">忘记密码或者用户名？</a>
+          </div>
+        </div></div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- First Band (Slider) -->
  
 
