@@ -44,8 +44,12 @@
 }
 
 .dialog--signin__main, .dialog--signup__main {
-  margin-left: 340px;
-  padding: 20px;
+  margin-left: 0px;
+  margin-right: 18.125rem;
+  position: relative;
+  padding: 3.125rem;
+  width: 20rem;
+  z-index: 2;
 }
 
 .js-close-dialog, .js-open-signin-dialog, .js-open-signup-dialog {
