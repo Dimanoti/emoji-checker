@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理表格</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #d4f7dc, #a8e9f5);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .status-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 40px; /* 设置固定高度，确保消息框区域占位 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+        .status-message {
+            font-size: 16px;
+            margin: 5px 0;
+            text-align: center;
+            color: #333;
+            transition: opacity 0.4s ease;
+        }
+
+        .status-message.visible {
+            opacity: 1;
+        }
+
+        .status-message.hidden {
+            opacity: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .modal-buttons .confirm-btn {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .modal-buttons .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .table-container {
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .action-btn {
+            cursor: pointer;
+            font-size: 18px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: #4CAF50;
+        }
+
+        .delete-btn {
+            color: #e63946;
+        }
+
+        .delete-btn:hover {
+            color: #c4001d;
+        }
+
+        .edit-row input, .edit-row select {
+            width: 90%;
+            padding: 5px;
+            font-size: 14px;
+        }
+        .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.search-container input {
+    width: 300px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-container button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+.search-container button:hover {
+    background-color: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <h1>用户管理表格</h1>
+
+    <div class="status-container">
+        <div id="statusMessage" class="status-message"></div>
+
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="输入姓名或电话搜索" />
+        <button onclick="searchTable()">搜索</button>
+        <button onclick="clearSearch()">清除搜索</button>
+    </div>
+    
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>确认删除此用户？</h3>
+            <div class="modal-buttons">
+                <button class="confirm-btn" onclick="confirmAndClose()">确认</button>
+                <button class="cancel-btn" onclick="closeModal()">取消</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>身份</th>
+                    <th>状态</th>
+                    <th>操作类型</th>
+                </tr>
+            </thead>
+            <tbody id="userTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let users = Array.from({ length: 100 }, (_, i) => ({
+    id: i + 1,
+    name: `用户${i + 1}`,
+    email: `user${i + 1}@example.com`,
+    phone: `123-456-78${i}`,
+    role: ["学生", "老师", "管理员"][i % 3],
+    status: i % 2 === 0
+}));
+const rowsPerPage = 10; // 每页显示行数
+let currentPage = 1; // 当前页码
+let rowToDelete = null;
+
+// 渲染表格
+let filteredUsers = [...users]; // 初始化过滤数据，与原始数据一致
+
+// 渲染表格
+function renderTable() {
+    const tableBody = document.getElementById("userTable");
+    tableBody.innerHTML = "";
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    filteredUsers.slice(start, end).forEach((user) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.phone}</td>
+            <td>${user.role}</td>
+            <td>
+                <label class="toggle-switch">
+                    <input type="checkbox" ${user.status ? "checked" : ""} onchange="toggleStatus(this, '${user.name}')">
+                    <span class="slider"></span>
+                </label>
+            </td>
+            <td>
+                <span class="action-btn" onclick="editRow(this)">✏️</span>
+                <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    renderPagination(); // 渲染分页按钮
+}
+
+// 搜索功能
+function searchTable() {
+    const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
+    if (searchInput) {
+        filteredUsers = users.filter(user =>
+            user.name.toLowerCase().includes(searchInput) || user.phone.includes(searchInput)
+        );
+        currentPage = 1; // 搜索后重置为第一页
+        renderTable();
+    } else {
+        showStatusMessage("请输入搜索关键字");
+    }
+}
+
+// 清除搜索
+function clearSearch() {
+    filteredUsers = [...users]; // 重置为所有数据
+    document.getElementById("searchInput").value = ""; // 清空输入框
+    currentPage = 1; // 重置为第一页
+    renderTable();
+    showStatusMessage("搜索已清除");
+}
+
+// 动态分页按钮渲染
+function renderPagination() {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const totalPages = Math.ceil(users.length / rowsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement("button");
+        button.textContent = i;
+        button.disabled = i === currentPage;
+        button.onclick = () => {
+            currentPage = i;
+            renderTable();
+        };
+        pagination.appendChild(button);
+    }
+}
+
+// 切换状态
+function toggleStatus(toggle, name) {
+    const status = toggle.checked ? "启用" : "禁用";
+    showStatusMessage(`用户 "${name}" 状态已更改为: ${status}`);
+}
+
+
+// 编辑行
+function editRow(editBtn) {
+    const row = editBtn.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    if (row.classList.contains("edit-row")) return;
+
+    row.classList.add("edit-row");
+
+    cells[1].innerHTML = `<input type="text" value="${cells[1].innerText}" />`;
+    cells[2].innerHTML = `<input type="text" value="${cells[2].innerText}" />`;
+    cells[3].innerHTML = `<input type="text" value="${cells[3].innerText}" />`;
+    cells[4].innerHTML = `
+        <select>
+            <option value="学生" ${cells[4].innerText === "学生" ? "selected" : ""}>学生</option>
+            <option value="老师" ${cells[4].innerText === "老师" ? "selected" : ""}>老师</option>
+            <option value="管理员" ${cells[4].innerText === "管理员" ? "selected" : ""}>管理员</option>
+        </select>
+    `;
+    cells[6].innerHTML = `
+        <button onclick="saveRow(this)">保存</button>
+        <button onclick="cancelEdit(this)">取消</button>
+    `;
+}
+
+// 保存行编辑
+function saveRow(saveBtn) {
+    const row = saveBtn.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    const name = cells[1].querySelector("input").value.trim();
+    const email = cells[2].querySelector("input").value.trim();
+    const phone = cells[3].querySelector("input").value.trim();
+    const role = cells[4].querySelector("select").value;
+
+    if (!name || !email || !phone) {
+        showStatusMessage("请完整填写所有信息");
+        return;
+    }
+
+    cells[1].innerText = name;
+    cells[2].innerText = email;
+    cells[3].innerText = phone;
+    cells[4].innerText = role;
+
+    cells[6].innerHTML = `
+        <span class="action-btn" onclick="editRow(this)">✏️</span>
+        <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
+    `;
+
+    row.classList.remove("edit-row");
+    showStatusMessage(`用户 "${name}" 信息已更新`);
+}
+
+// 取消编辑
+function cancelEdit(cancelBtn) {
+    const row = cancelBtn.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    const rowIndex = parseInt(cells[0].innerText) - 1;
+    const user = users[rowIndex];
+
+    cells[1].innerText = user.name;
+    cells[2].innerText = user.email;
+    cells[3].innerText = user.phone;
+    cells[4].innerText = user.role;
+
+    cells[6].innerHTML = `
+        <span class="action-btn" onclick="editRow(this)">✏️</span>
+        <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
+    `;
+
+    row.classList.remove("edit-row");
+}
+
+// 确认删除
+function confirmDelete(deleteBtn) {
+    rowToDelete = deleteBtn.closest("tr");
+    const modal = document.getElementById("deleteModal");
+    modal.style.display = "flex";
+}
+
+// 删除行
+function confirmAndClose() {
+    if (rowToDelete) {
+        const userId = parseInt(rowToDelete.children[0].innerText);
+        const userName = rowToDelete.children[1].innerText;
+        users.splice(users.findIndex(user => user.id === userId), 1);
+        showStatusMessage(`用户 "${userName}" 已删除`); // 显示状态消息
+    }
+    closeModal(); // 无论删除与否都刷新表格
+}
+// 删除用户并关闭模态框
+// function confirmAndClose() {
+//     if (rowToDelete) {
+//         const userId = parseInt(rowToDelete.children[0].innerText); // 获取用户ID
+//         const userName = rowToDelete.children[1].innerText; // 获取用户名
+//         users.splice(users.findIndex(user => user.id === userId), 1); // 删除对应用户
+//         renderTable(); // 重新渲染表格
+//         showStatusMessage(`用户 "${userName}" 已删除`); // 显示状态消息
+//     }
+//     closeModal(); // 关闭模态框
+// }
+
+
+// 关闭模态框
+function closeModal() {
+    const modal = document.getElementById("deleteModal");
+    if (modal) {
+        modal.style.display = "none";
+        rowToDelete = null;
+        renderTable(); // 刷新表格
+    }
+}
+
+// 显示状态消息
+function showStatusMessage(message) {
+    const statusMessage = document.getElementById("statusMessage");
+    if (statusMessage) {
+        statusMessage.style.width = "100%"; // 设置固定宽度
+        statusMessage.innerText = message;
+        statusMessage.style.display = "block";
+        setTimeout(() => {
+            statusMessage.style.display = "none";
+        }, 10000);
+    }
+}
+
+// 初始化表格
+renderTable();
+
+
+    </script>
+    
+    
+    
+</body>
+</html>

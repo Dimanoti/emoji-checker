@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理表格</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #d4f7dc, #a8e9f5);
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .status-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-message {
+            font-size: 16px;
+            margin: 5px 0;
+            text-align: center;
+            color: #333;
+        }
+
+        .status-message.visible {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .delete-confirm {
+            display: none;
+            text-align: center;
+        }
+
+        .delete-confirm button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-confirm .confirm-btn {
+            background-color: #e63946;
+            color: white;
+        }
+
+        .delete-confirm .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .table-container {
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* 确保 th 不受 tr:hover 的影响 */
+        thead th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .action-btn {
+            cursor: pointer;
+            font-size: 18px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: #4CAF50;
+        }
+
+        .delete-btn {
+            color: #e63946;
+        }
+
+        .delete-btn:hover {
+            color: #c4001d;
+        }
+
+        .edit-row input, .edit-row select {
+            width: 90%;
+            padding: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>用户管理表格</h1>
+
+    <!-- 历史更改信息和确认区 -->
+    <div class="status-container">
+        <div id="statusMessage" class="status-message"></div>
+        <div id="deleteConfirm" class="delete-confirm">
+            <span>确认删除此用户？</span>
+            <button class="confirm-btn" onclick="deleteRow()">确认</button>
+            <button class="cancel-btn" onclick="cancelDelete()">取消</button>
+        </div>
+    </div>
+
+    <!-- 表格区 -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>身份</th>
+                    <th>状态</th>
+                    <th>操作类型</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <tr>
+                    <td>1</td>
+                    <td>张三</td>
+                    <td>zhangsan@example.com</td>
+                    <td>123-456-7890</td>
+                    <td>学生</td>
+                    <td>
+                        <label class="toggle-switch">
+                            <input type="checkbox" onchange="toggleStatus(this, '张三')">
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <span class="action-btn edit-btn" onclick="editRow(this)">✏️</span>
+                        <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
+                    </td>
+                </tr>
+                <!-- 更多数据 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let rowToDelete = null;
+
+        function toggleStatus(toggle, name) {
+            const status = toggle.checked ? "打开" : "关闭";
+            showStatusMessage(`用户 "${name}" 的状态已切换为: ${status}`);
+        }
+
+        function confirmDelete(deleteBtn) {
+            rowToDelete = deleteBtn.parentElement.parentElement;
+            document.getElementById("deleteConfirm").style.display = "block";
+        }
+
+        function deleteRow() {
+            if (rowToDelete) {
+                rowToDelete.remove();
+                showStatusMessage("用户已删除");
+                cancelDelete();
+            }
+        }
+
+        function cancelDelete() {
+            rowToDelete = null;
+            document.getElementById("deleteConfirm").style.display = "none";
+        }
+
+        function showStatusMessage(message) {
+            const statusMessage = document.getElementById("statusMessage");
+            statusMessage.textContent = message;
+            statusMessage.classList.add("visible");
+
+            setTimeout(() => {
+                statusMessage.classList.remove("visible");
+            }, 3000);
+        }
+
+        function editRow(editBtn) {
+            const row = editBtn.parentElement.parentElement;
+            const cells = row.querySelectorAll("td");
+
+            // 如果是正在编辑状态，则退出
+            if (row.classList.contains("edit-row")) return;
+
+            // 添加编辑输入框
+            cells[1].innerHTML = `<input type="text" value="${cells[1].innerText}" />`;
+            cells[2].innerHTML = `<input type="text" value="${cells[2].innerText}" />`;
+            cells[3].innerHTML = `<input type="text" value="${cells[3].innerText}" />`;
+            cells[4].innerHTML = `
+                <select>
+                    <option value="学生" ${cells[4].innerText === "学生" ? "selected" : ""}>学生</option>
+                    <option value="老师" ${cells[4].innerText === "老师" ? "selected" : ""}>老师</option>
+                    <option value="管理员" ${cells[4].innerText === "管理员" ? "selected" : ""}>管理员</option>
+                </select>
+            `;
+
+            // 替换操作按钮为保存按钮
+            cells[6].innerHTML = `
+                <button onclick="saveRow(this)">保存</button>
+            `;
+
+            row.classList.add("edit-row");
+        }
+
+        function saveRow(saveBtn) {
+            const row = saveBtn.parentElement.parentElement;
+            const cells = row.querySelectorAll("td");
+
+            // 保存输入框和下拉框的值
+            const name = cells[1].querySelector("input").value;
+            const email = cells[2].querySelector("input").value;
+            const phone = cells[3].querySelector("input").value;
+            const role = cells[4].querySelector("select").value;
+
+            cells[1].innerText = name;
+            cells[2].innerText = email;
+            cells[3].innerText = phone;
+            cells[4].innerText = role;
+
+            // 恢复操作按钮
+            cells[6].innerHTML = `
+                <span class="action-btn edit-btn" onclick="editRow(this)">✏️</span>
+                <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
+            `;
+
+            row.classList.remove("edit-row");
+
+            showStatusMessage(`用户 "${name}" 的信息已修改`);
+        }
+    </script>
+</body>
+</html>
