@@ -287,13 +287,12 @@ let rowToDelete = null;
 let filteredUsers = [...users]; // 初始化过滤数据，与原始数据一致
 
 // 渲染表格
+// 渲染表格（不分页）
 function renderTable() {
     const tableBody = document.getElementById("userTable");
-    tableBody.innerHTML = "";
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+    tableBody.innerHTML = ""; // 清空表格内容
 
-    filteredUsers.slice(start, end).forEach((user) => {
+    filteredUsers.forEach((user) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${user.id}</td>
@@ -312,11 +311,10 @@ function renderTable() {
                 <span class="action-btn delete-btn" onclick="confirmDelete(this)">🗑️</span>
             </td>
         `;
-        tableBody.appendChild(row);
+        tableBody.appendChild(row); // 将行添加到表格中
     });
-
-    renderPagination(); // 渲染分页按钮
 }
+
 
 // 搜索功能
 function searchTable() {
@@ -341,24 +339,24 @@ function clearSearch() {
     showStatusMessage("搜索已清除");
 }
 
-// 动态分页按钮渲染
-function renderPagination() {
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+// // 动态分页按钮渲染
+// function renderPagination() {
+//     const pagination = document.getElementById("pagination");
+//     pagination.innerHTML = "";
 
-    const totalPages = Math.ceil(users.length / rowsPerPage);
+//     const totalPages = Math.ceil(users.length / rowsPerPage);
 
-    for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement("button");
-        button.textContent = i;
-        button.disabled = i === currentPage;
-        button.onclick = () => {
-            currentPage = i;
-            renderTable();
-        };
-        pagination.appendChild(button);
-    }
-}
+//     for (let i = 1; i <= totalPages; i++) {
+//         const button = document.createElement("button");
+//         button.textContent = i;
+//         button.disabled = i === currentPage;
+//         button.onclick = () => {
+//             currentPage = i;
+//             renderTable();
+//         };
+//         pagination.appendChild(button);
+//     }
+// }
 
 // 切换状态
 function toggleStatus(toggle, name) {
