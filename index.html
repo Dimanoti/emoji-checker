@@ -32,40 +32,51 @@
 	  </section>
 	</nav>
   <!-- Modal for Sign In -->
-  <div class="dialog dialog--signin" id="signin-dialog" style="display:none;">
-        <div class="dialog__content">
-          <div class="dialog--signin__bg">
-            <div class="dialog--signin__side">
-              <h1>还没有账户？</h1>
-              <p>注册一个账户，享受我们的服务。</p>
-              <a href="javascript:void(0);" class="inverse rounded button js-open-signup-dialog">现在注册</a>
-            </div>
-          </div>
-          <div class="dialog--signin__main">
-            <form action="/login-action" method="post">
-              <div class="dialog--signin__close-container supplementary">
-                <a href="javascript:void(0);" class="js-close-dialog">关闭</a>
-              </div>
-              <h1 class="dialog--signin__title">登录</h1>
-              <div class="row"><div class="columns">
-                <label>
-                  用户名
-                  <input name="uname" type="text">
-                </label>
-              </div></div>
-              <div class="row"><div class="columns">
-                <label>
-                  密码
-                  <input name="password" type="password">
-                </label>
-              </div></div>
-              <div class="row"><div class="columns">
-                <input type="submit" value="登录" class="expanded rounded primary button">
-              </div></div>
-            </form>
-          </div>
-        </div>
+		<div class="dialog dialog--signin" style="display:none">
+  <div class="dialog__content">
+    <div class="dialog--signin__bg">
+      <div class="dialog--signin__side">
+        <h1>还没有账户？</h1>
+        <p>注册一个账户，享受我们的服务。</p>
+        <div><a href="javascript:void(0);" class="inverse rounded button js-open-signup-dialog">现在注册</a></div>
       </div>
+    </div>
+    <div class="dialog--signin__main">
+      <form action="/login" method="post">
+        <div class="dialog--signin__close-container supplementary">
+          <a name="dialog--signin__close" href="javascript:;">关闭</a>
+        </div>
+        <h1 class="dialog--signin__title">登录</h1>
+        <p class="dialog--signin__note">使用您的 Vijos 通用账户</p>
+        <div class="row"><div class="columns">
+          <label class="material textbox">
+            用户名
+            <input name="uname" type="text" data-autofocus>
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label class="material textbox">
+            密码
+            <input name="password" type="password">
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label class="checkbox">
+            <input type="checkbox" name="rememberme">记住我
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <input type="submit" value="登录" class="expanded rounded primary button">
+        </div></div>
+        <div class="row"><div class="columns">
+          <div class="supplementary text-center">
+            <a href="/lostpass">忘记密码或者用户名？</a>
+          </div>
+        </div></div>
+      </form>
+    </div>
+  </div>
+</div>
  
       <!-- Dialog for Sign Up -->
       <div class="dialog dialog--signup" id="signup-dialog" style="display:none;">
