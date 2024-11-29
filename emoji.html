@@ -1,0 +1,89 @@
+<html class="van-theme-light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emoji表情大全</title>
+    <meta name="description" content="探索最全最新的emoji表情库，👆点击即可复制，支持中文和英文搜索🔍emoji。查找你喜欢的emoji表情符号，尽情享受表情的乐趣和创造力🎨。">
+    <meta name="keywords" content="emoji, emoji表情大全, emoji大全, 表情符号大全可复制, emoji表情大全, emoji文案, emoji复制, 在线emoji, emoji搜索, emoji表情符号大全">
+    <link rel="preload" as="fetch" crossorigin="anonymous" href="/emojiall/_payload.json">
+    <style>
+        .main {
+            background-color: #eee;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .emojiGroup {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            font-size: 3.5em;
+            justify-content: space-evenly;
+            overflow: scroll;
+            padding-top: 138px;
+            text-align: center;
+        }
+
+        .clip {
+            border-radius: 16px;
+            display: block;
+            margin-top: 16px;
+            padding-bottom: 8px;
+            padding-top: 8px;
+            transition: box-shadow .3s ease-in-out;
+            width: 22vw;
+        }
+
+        .clip:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, .4);
+        }
+    </style>
+    <script>
+        function submitForm(emoji) {
+            // 设置隐藏表单字段的值为点击的表情
+            document.getElementById('selectedEmoji').value = emoji;
+            // 弹出确认框
+            if (confirm('确认提交这个表情: ' + emoji + ' 吗？')) {
+                // 提交表单
+                document.getElementById('emojiForm').submit();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="__nuxt">
+        <div class="van-config-provider" style="">
+            <div class="main" style="background:#eeeeee;">
+                <div style="position:fixed;top:0;width:100%;">
+                    <div class="van-nav-bar van-hairline--bottom">
+                        <div class="van-nav-bar__content">
+                            <div class="van-nav-bar__left van-haptics-feedback">
+                                <div style="font-weight: bold;font-size: 19px;padding-top: 8px;padding-bottom: 8px"> Emoji大全 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="emojiGroup">
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😕')">😕</div> <!-- 疑惑 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😡')">😡</div> <!-- 生气 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😆')">😆</div> <!-- 大笑 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😴')">😴</div> <!-- 困 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😟')">😟</div> <!-- 担心 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😊')">😊</div> <!-- 微笑 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('😞')">😞</div> <!-- 沮丧 -->
+                    <div class="clip van-haptics-feedback" style="background-color: rgb(255, 255, 255);" onclick="submitForm('🙄')">🙄</div> <!-- 挑眉 -->
+                </div>
+
+                <!-- 隐藏表单，用于提交数据 -->
+                <form id="emojiForm" action="/submit-emoji" method="POST">
+                    <input type="hidden" id="selectedEmoji" name="emoji" value="">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
