@@ -11,12 +11,7 @@
 }
 
 .dialog__content {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .dialog--signin__bg, .dialog--signup__bg {
@@ -34,12 +29,14 @@
 }
 
 .dialog--signin__side, .dialog--signup__side {
-  background: #f0f0f0;
   padding: 20px;
   border-radius: 5px;
   max-width: 300px;
   width: 100%;
-  text-align: center;
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  top: 50%;
 }
 
 .dialog--signin__main, .dialog--signup__main {
@@ -49,6 +46,7 @@
   padding: 3.125rem;
   width: 20rem;
   z-index: 2;
+  background: #fff;
 }
 
 .js-close-dialog, .js-open-signin-dialog, .js-open-signup-dialog {
