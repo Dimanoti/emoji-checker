@@ -37,6 +37,7 @@
   right: 0;
   transform: translateY(-50%);
   top: 50%;
+  color: #ddd;
 }
 
 .dialog--signin__main, .dialog--signup__main {
