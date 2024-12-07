@@ -83,37 +83,51 @@
       </div>
  
       <!-- Dialog for Sign Up -->
-      <div class="dialog dialog--signup" id="signup-dialog" style="display:none;">
-        <div class="dialog__content">
-          <div class="dialog--signup__main">
-            <form action="/signup-action" method="post">
-              <div class="dialog--signup__close-container supplementary">
-                <a href="javascript:void(0);" class="js-close-dialog" style="font-family: 微软雅黑 Light">关闭</a>
-              </div>
-              <h1 class="dialog--signup__title" style="font-family: 微软雅黑 Light; color: #7fb2de">注册</h1>
-              <div class="row"><div class="columns">
-                <label>
-                  用户名
-                  <input name="uname" type="text">
-                </label>
-              </div></div>
-              <div class="row"><div class="columns">
-                <label>
-                  密码
-                  <input name="password" type="password">
-                </label>
-              </div></div>
-              <div class="row"><div class="columns">
-                <input type="submit" value="注册" class="expanded rounded primary button">
-              </div></div>
-              <div class="row"><div class="columns">
-                <a href="javascript:void(0);" class="supplementary text-center js-open-signin-dialog" style="font-family: 微软雅黑 Light">已经拥有一个账户？登录</a>
-              </div></div>
-            </form>
-          </div>
+<div class="dialog dialog--signup" id="signup-dialog" style="display:none;">
+  <div class="dialog__content">
+    <div class="dialog--signup__main">
+      <form action="/signup-action" method="post" id="signup-form">
+        <div class="dialog--signup__close-container supplementary">
+          <a href="javascript:void(0);" class="js-close-dialog" style="font-family: 微软雅黑 Light">关闭</a>
         </div>
-      </div>
-	</div>
+        <h1 class="dialog--signup__title" style="font-family: 微软雅黑 Light; color: #7fb2de">注册</h1>
+        <div class="row"><div class="columns">
+          <label>
+            用户名
+            <input name="uname" type="text" id="uname">
+            <span id="uname-error" style="color:red;"></span>
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label>
+            密码
+            <input name="password" type="password" id="password">
+            <span id="password-error" style="color:red;"></span>
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label>
+            请再输入一遍密码
+            <input name="confirm-password" type="password" id="confirm-password">
+            <span id="confirm-password-error" style="color:red;"></span>
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <label>
+            邀请码
+            <input name="invite-code" type="text" id="invite-code">
+          </label>
+        </div></div>
+        <div class="row"><div class="columns">
+          <input type="submit" value="注册" class="expanded rounded primary button" id="submit-btn">
+        </div></div>
+        <div class="row"><div class="columns">
+          <a href="javascript:void(0);" class="supplementary text-center js-open-signin-dialog" style="font-family: 微软雅黑 Light">已经拥有一个账户？登录</a>
+        </div></div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <!-- First Band (Slider) -->
